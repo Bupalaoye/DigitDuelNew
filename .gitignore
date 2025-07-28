@@ -1,0 +1,23 @@
+# Godot 4+ specific ignores
+.godot/
+.vscode/
+
+# Godot 3 specific ignores (good to have for compatibility)
+.import/
+export_presets.cfg
+
+# General ignores
+*.translation
+*.pck
+*.exe
+*.dll
+*.so
+*.a
+
+# Builds
+build/
+bin/
+
+# Mono/C# specific
+.mono/
+obj/
