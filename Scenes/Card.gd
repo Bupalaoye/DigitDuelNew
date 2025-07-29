@@ -1,5 +1,8 @@
 extends Node2D
 
+
+var starting_position := Vector2(0, 0)
+
 @onready var area_2d: Area2D = %Area2D
 
 signal on_hovered
