@@ -11,7 +11,7 @@ signal on_hovered_off
 func _ready() -> void:
 	area_2d.mouse_entered.connect(_on_hovered)
 	area_2d.mouse_exited.connect(_on_hovered_off)
-	get_parent().connect_card_signals(self)
+	CardManager.connect_card_signals(self)
 
 
 func _on_hovered():

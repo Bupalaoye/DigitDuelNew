@@ -6,10 +6,11 @@ var card_being_dragged = null
 var screen_size
 var is_hovering_card = false
 
-@onready var player_hand_ref: Node2D = %PlayerHand
 
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
+	InputManager.left_mouse_clicked.connect(on_left_mouse_clicked)
+	InputManager.left_mouse_released.connect(on_left_mouse_released)
 
 func _process(delta: float) -> void:
 	if card_being_dragged:
@@ -17,16 +18,14 @@ func _process(delta: float) -> void:
 		mouse_pos.x = clampf(mouse_pos.x, 0, screen_size.x)
 		mouse_pos.y = clampf(mouse_pos.y, 0, screen_size.y)
 		card_being_dragged.position = mouse_pos
-		
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.is_pressed():
-			var card  = raycast_check_for_card()
-			if card:
-				start_drag(card)
-		else:
-			finish_drag()
+
+func on_left_mouse_clicked():
+	pass
+
+func on_left_mouse_released():
+	if card_being_dragged:
+		finish_drag()
 
 func start_drag(card):
 	card_being_dragged = card
@@ -37,12 +36,12 @@ func finish_drag():
 		card_being_dragged.scale = Vector2(1.1, 1.1)
 		var card_slot_found = raycast_check_for_card_slot()
 		if card_slot_found and not card_slot_found.card_in_slot:
-			player_hand_ref.remove_card_from_hand(card_being_dragged)
+			PlayerHand.remove_card_from_hand(card_being_dragged)
 			card_being_dragged.position = card_slot_found.position
 			card_slot_found.card_in_slot = true
 			card_being_dragged.get_node('Area2D/CollisionShape2D').disabled = true
 		else:
-			player_hand_ref.add_card_to_hand(card_being_dragged)
+			PlayerHand.add_card_to_hand(card_being_dragged, 1)
 		card_being_dragged = null
 
 

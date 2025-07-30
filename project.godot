@@ -15,11 +15,23 @@ run/main_scene="uid://bg8xejtwvnh6r"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+InputManager="*res://Scripts/InputManager.gd"
+CardManager="*res://Scripts/CardManager.gd"
+PlayerHand="*res://Scripts/PlayerHand.gd"
+
 [display]
 
 window/size/borderless=true
 window/stretch/mode="viewport"
 window/vsync/vsync_mode=0
+
+[layer_names]
+
+2d_physics/layer_1="CARD"
+2d_physics/layer_2="CARD_SLOT"
+2d_physics/layer_3="DECK"
 
 [rendering]
 
