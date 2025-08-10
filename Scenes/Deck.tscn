@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cfpbtymwc5m73"]
+[gd_scene load_steps=4 format=3 uid="uid://cfpbtymwc5m73"]
 
 [ext_resource type="Script" uid="uid://2nbsxbrmkbs5" path="res://Scenes/Deck.gd" id="1_57cf8"]
+[ext_resource type="Texture2D" uid="uid://ct6hk5jmmxp0d" path="res://PlayingCards/individual_sprites/back.png" id="2_0g7pp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vgw2c"]
 size = Vector2(52, 77)
@@ -8,34 +9,23 @@ size = Vector2(52, 77)
 [node name="Deck" type="Node2D"]
 script = ExtResource("1_57cf8")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+[node name="DisplayImage" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+texture = ExtResource("2_0g7pp")
+
+[node name="CardNum" type="RichTextLabel" parent="DisplayImage"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = -26.0
 offset_top = -38.5
-offset_right = 26.0
-offset_bottom = 38.5
+offset_right = -26.0
+offset_bottom = -38.5
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.47451, 0.407843, 0.282353, 0.356863)
-
-[node name="CardNum" type="RichTextLabel" parent="ColorRect"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
