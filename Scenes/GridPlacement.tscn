@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dj88ln2j5bhf"]
+
+[ext_resource type="Script" uid="uid://cww0oebqm68ii" path="res://Scenes/GridPlacement.gd" id="1_itvex"]
+
+[node name="GridPlacement" type="Node2D"]
+script = ExtResource("1_itvex")

@@ -6,7 +6,6 @@ var card_being_dragged = null
 var screen_size
 var is_hovering_card = false
 
-
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
 	InputManager.left_mouse_clicked.connect(on_left_mouse_clicked)
@@ -29,19 +28,20 @@ func on_left_mouse_released():
 
 func start_drag(card):
 	card_being_dragged = card
-	card.scale = Vector2(1,1)
+	card.start_drag(true)
+	
 
 func finish_drag():
 	if card_being_dragged:
-		card_being_dragged.scale = Vector2(1.1, 1.1)
 		var card_slot_found = raycast_check_for_card_slot()
-		if card_slot_found and not card_slot_found.card_in_slot:
+		if card_slot_found and not card_slot_found.card_in_slot and card_slot_found.owner_is_player:
 			PlayerHand.remove_card_from_hand(card_being_dragged)
-			card_being_dragged.position = card_slot_found.position
+			card_being_dragged.set_in_slot(true)
 			card_slot_found.card_in_slot = true
-			card_being_dragged.get_node('Area2D/CollisionShape2D').disabled = true
+			card_being_dragged.position = card_slot_found.position
 		else:
 			PlayerHand.add_card_to_hand(card_being_dragged, 1)
+		card_being_dragged.is_draging = false
 		card_being_dragged = null
 
 
@@ -86,23 +86,10 @@ func connect_card_signals(card):
 
 func on_hovered_over_card(card):
 	if !is_hovering_card:
-		highlight_card(card, true)
 		is_hovering_card = true
 	
 func on_hovered_off_card(card):
 	if !card_being_dragged:
-		highlight_card(card, false)
 		var new_card_hovered = raycast_check_for_card()
-		if new_card_hovered:
-			highlight_card(new_card_hovered, true)
-		else:
+		if !new_card_hovered:
 			is_hovering_card = false
-
-
-func highlight_card(card , hovered):
-	if hovered:
-		card.scale = Vector2(1.1, 1.1)
-		card.z_index = 2
-	else:
-		card.scale = Vector2(1, 1 )
-		card.z_index = 1

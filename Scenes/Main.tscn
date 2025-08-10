@@ -1,15 +1,16 @@
 [gd_scene load_steps=3 format=3 uid="uid://bg8xejtwvnh6r"]
 
 [ext_resource type="PackedScene" uid="uid://cfpbtymwc5m73" path="res://Scenes/Deck.tscn" id="2_idj7w"]
-[ext_resource type="PackedScene" uid="uid://beayidfusy8gk" path="res://Scenes/CardSlot.tscn" id="3_kln2b"]
+[ext_resource type="PackedScene" uid="uid://dj88ln2j5bhf" path="res://Scenes/GridPlacement.tscn" id="2_kln2b"]
 
 [node name="Main" type="Node2D"]
 
-[node name="Card" parent="." instance=ExtResource("3_kln2b")]
-position = Vector2(452, 316)
+[node name="PlayerDeck" parent="." instance=ExtResource("2_idj7w")]
+position = Vector2(60, 556)
+is_player = true
 
-[node name="Card2" parent="." instance=ExtResource("3_kln2b")]
-position = Vector2(670, 326)
+[node name="OpponentDeck" parent="." instance=ExtResource("2_idj7w")]
+position = Vector2(902, 58)
 
-[node name="Deck" parent="." instance=ExtResource("2_idj7w")]
-position = Vector2(139, 549)
+[node name="CardSlotsManager" parent="." instance=ExtResource("2_kln2b")]
+z_index = -3
