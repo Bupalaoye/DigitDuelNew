@@ -1,5 +1,5 @@
+class_name Deck
 extends Node2D
-
 
 @export var is_player := false
 # ADDED: 导出NodePath，用于在编辑器中指定此牌堆对应的手牌区
@@ -36,7 +36,7 @@ func _ready() -> void:
 	# MODIFIED: 只有当target_hand存在时才发牌
 	if target_hand:
 		for i in range(PLAYER_STARTING_CARD_NUM):
-			draw_card(false) # 初始发牌不应受drawn_card_this_turn限制
+			draw_card(false)
 	
 	drawn_card_this_turn = true
 
@@ -71,6 +71,11 @@ func draw_card(check_turn_limit: bool = true):
 	
 	# MODIFIED: 调用目标手牌区的函数来添加卡牌
 	target_hand.add_card_to_hand(new_card, .4)
+	if check_turn_limit:
+		drawn_card_this_turn = true
+
+func on_new_turn_started():
+	drawn_card_this_turn = false
 
 func on_deck_clicked():
 	if is_player:

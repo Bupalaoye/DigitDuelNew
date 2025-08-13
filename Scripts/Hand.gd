@@ -6,7 +6,7 @@ const CARD_SPACING = 60
 
 # ADDED: 导出变量，用于在编辑器中配置
 @export var is_player_hand: bool = true # 用来区分是玩家手牌还是对手手牌
-@export var hand_y_position: float = 970.0 # 手牌区域的Y坐标
+@export var hand_y_position: float = 0 # 手牌区域的Y坐标
 @export var card_scale: float = 1.0 # 手牌中卡牌的缩放
 @export var card_z_index: int = 1 # 手牌中卡牌的基础Z-Index
 @export var center_screen_x: float = 0.0
@@ -16,8 +16,7 @@ var cards_in_hand: Array[Node2D] = []
 
 
 func _ready() -> void:
-	# REMOVED: 不再硬编码Y坐标
-	hand_y_position = get_viewport().size.y - 50
+	pass
 
 func add_card_to_hand(card: Node2D, speed: float):
 	# ADDED: 当卡牌被加入手牌时，记录它属于哪个手牌
@@ -65,8 +64,6 @@ func update_hand_positions(speed: float):
 		card.scale = Vector2(card_scale, card_scale)
 		# 确保手牌的 z_index 足够高，以免被场上元素遮挡
 		card.z_index = card_z_index + i # 让卡牌有轻微的层叠效果
-
-# REMOVED: calculate_card_position 已内联到 update_hand_positions
 
 func animation_card_to_position(card: Node2D, new_position: Vector2, speed: float):
 	var tween = get_tree().create_tween()
