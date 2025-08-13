@@ -11,16 +11,18 @@ signal on_hovered_off
 var starting_position := Vector2(0, 0)
 var is_draging := false
 var is_in_slot := false
-
+var is_player_card := false
+var current_hand = null  # ADDED: 用于引用卡牌所在的Hand节点
 
 func _ready() -> void:
+	if !is_player_card : return
 	area_2d.mouse_entered.connect(_on_hovered)
 	area_2d.mouse_exited.connect(_on_hovered_off)
 	CardManager.connect_card_signals(self)
 	animation_player.play("card_flip")
 
 func is_interactable() -> bool:
-	return !(is_draging or is_in_slot or CardManager.card_being_dragged)
+	return !(is_draging or is_in_slot or CardManager.card_being_dragged or is_player_card)
 
 func _on_hovered():
 	if !is_interactable():return 

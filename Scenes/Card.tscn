@@ -9,6 +9,7 @@ size = Vector2(52, 77)
 
 [sub_resource type="Animation" id="Animation_h8wm0"]
 length = 0.001
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -43,7 +44,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_3p273"]
@@ -100,7 +101,6 @@ unique_name_in_owner = true
 texture = ExtResource("1_pnb5n")
 
 [node name="BackImage" type="Sprite2D" parent="."]
-visible = false
 texture = ExtResource("2_h8wm0")
 
 [node name="Area2D" type="Area2D" parent="."]

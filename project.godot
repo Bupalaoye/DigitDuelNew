@@ -19,7 +19,6 @@ config/icon="res://icon.svg"
 
 InputManager="*res://Scripts/InputManager.gd"
 CardManager="*res://Scripts/CardManager.gd"
-PlayerHand="*res://Scripts/PlayerHand.gd"
 CardDataBase="*res://Scripts/CardDataBase.gd"
 
 [display]

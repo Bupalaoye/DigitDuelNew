@@ -29,7 +29,8 @@ func raycast_at_cursor():
 		var result_collision_mask = highest_card.collider.collision_layer
 		if result_collision_mask == COLLISION_CARD_LAYER:
 			var card_found = highest_card.collider.get_parent()
-			CardManager.start_drag(card_found)
+			if card_found.is_player_card:
+				CardManager.start_drag(card_found)
 		elif result_collision_mask == COLLISION_CARD_SLOT_LAYER:
 			print('card slot clicked')
 		elif result_collision_mask ==  COLLISION_CARD_DECK_LAYER:
