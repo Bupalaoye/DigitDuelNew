@@ -10,7 +10,7 @@ extends Node2D
 @onready var display_image: Sprite2D = %DisplayImage
 const CARD_SCENE = preload("uid://bnqfvwkx3esd")
 const HAND_COUNT = 8
-var player_deck = []
+var player_deck = []	# card id array
 var drawn_card_this_turn := false
 var PLAYER_STARTING_CARD_NUM := 4
 
@@ -25,7 +25,7 @@ func _ready() -> void:
 		push_warning("Deck %s has no target_hand assigned!" % self.name)
 
 
-	player_deck = CardDataBase.get_card_asset_names()
+	player_deck = CardDataBase.get_all_card_ids()
 	card_num.text = str(player_deck.size())
 	# 洗牌
 	player_deck.shuffle()
@@ -49,8 +49,8 @@ func draw_card(check_turn_limit: bool = true):
 		push_error("Cannot draw card: target_hand is not set for this deck.")
 		return
 	
-	var card_drawn = player_deck[0]
-	player_deck.erase(card_drawn)
+	var card_drawn_id = player_deck[0]
+	player_deck.erase(card_drawn_id)
 	
 	# update text
 	card_num.text = str(player_deck.size())
@@ -65,9 +65,9 @@ func draw_card(check_turn_limit: bool = true):
 	new_card.is_player_card = self.is_player
 	new_card.position = self.position
 	CardManager.add_child(new_card) # 最好让一个专门的节点管理所有卡牌实例
-	var card_image_path = str('res://PlayingCards/individual_sprites/%s.png' % card_drawn)
-	new_card.set_image_by_path(card_image_path)
-	new_card.name = card_drawn
+	var card_drawn_data : CardData = CardDataBase.get_card_data(card_drawn_id)
+	new_card.card_data = card_drawn_data
+	new_card.update_visual()
 	
 	# MODIFIED: 调用目标手牌区的函数来添加卡牌
 	target_hand.add_card_to_hand(new_card, .4)

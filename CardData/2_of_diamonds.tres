@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://qtyault4un1f"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_7k0kw"]
+
+[resource]
+script = ExtResource("1_7k0kw")
+card_id = &"2_of_diamonds"
+card_name = "Two"
+description = "The lowest card in the deck."
+atk = 2
+def = 2
+texture_path = "res://PlayingCards/individual_sprites/2_of_diamonds.png"
+suit = "diamonds"
+rank = "2"

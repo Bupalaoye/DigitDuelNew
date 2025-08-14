@@ -1,5 +1,6 @@
 # GridPlacement.gd
 extends Node2D
+class_name CardSlotsManager
 
 # --- 布局参数 ---
 @export_group("Grid Layout")
@@ -83,3 +84,39 @@ func generate_slots_for_area(num_slots: int, area_start_x: float, area_start_y: 
 		# 设置位置
 		# 我们已经知道它是 Node2D, 可以简化判断
 		card_slot.position = Vector2(slot_center_x, slot_center_y)
+
+
+## 检查是否存在任何一个属于对手且为空的卡槽。
+func has_any_free_opponent_card_slot() -> bool:
+	# 遍历所有子节点（即本脚本生成的所有CardSlot实例）
+	for slot in get_children():
+		# 检查两个条件：
+		# 1. 这个卡槽是否属于对手？ (!slot.owner_is_player)
+		# 2. 这个卡槽是否为空？ (!slot.card_in_slot)
+		if not slot.owner_is_player and not slot.card_in_slot:
+			# 如果同时满足，说明我们找到了一个可用的对手卡槽。
+			# 无需再检查其他卡槽，立即返回 true。
+			return true
+	
+	# 如果循环结束都没有找到任何一个满足条件的卡槽，
+	# 说明所有对手的卡槽都满了，返回 false。
+	return false
+
+
+## 获取一个包含所有属于对手且为空的卡槽的数组。
+func get_free_opponent_card_slots() -> Array[Node2D]:
+	# 1. 创建一个空数组来存储找到的卡槽。
+	# 使用类型提示 Array[Node2D] 确保数组内容的类型安全。
+	var free_slots: Array[Node2D] = []
+	
+	# 2. 遍历所有子节点（即所有CardSlot实例）。
+	# 使用类型提示 for slot: Node2D in ... 也是一个好习惯。
+	for slot: Node2D in get_children():
+		# 3. 检查每个卡槽是否同时满足两个条件：
+		if not slot.owner_is_player and not slot.card_in_slot:
+			# 4. 如果满足，就将这个卡槽添加到我们的结果数组中。
+			free_slots.append(slot)
+			
+	# 5. 遍历结束后，返回包含所有找到的卡槽的数组。
+	#    如果一个都没找到，这个数组将是空的。
+	return free_slots

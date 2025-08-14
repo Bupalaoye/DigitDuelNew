@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://bqkvixspoqs7j"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_7i2q6"]
+
+[resource]
+script = ExtResource("1_7i2q6")
+card_id = &"jack_of_hearts"
+card_name = "Jack"
+description = "A face card, valuable in many games."
+atk = 11
+def = 11
+texture_path = "res://PlayingCards/individual_sprites/jack_of_hearts.png"
+suit = "hearts"
+rank = "jack"

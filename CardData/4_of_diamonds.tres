@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://cqwv6xyg1hav4"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_ycm8i"]
+
+[resource]
+script = ExtResource("1_ycm8i")
+card_id = &"4_of_diamonds"
+card_name = "Four"
+description = "A mid-low card."
+atk = 4
+def = 4
+texture_path = "res://PlayingCards/individual_sprites/4_of_diamonds.png"
+suit = "diamonds"
+rank = "4"

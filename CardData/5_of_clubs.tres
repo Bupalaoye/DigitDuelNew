@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://3ry7jetokr16"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_qfhfm"]
+
+[resource]
+script = ExtResource("1_qfhfm")
+card_id = &"5_of_clubs"
+card_name = "Five"
+description = "A mid-range card."
+atk = 5
+def = 5
+texture_path = "res://PlayingCards/individual_sprites/5_of_clubs.png"
+suit = "clubs"
+rank = "5"

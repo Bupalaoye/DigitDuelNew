@@ -1,13 +1,14 @@
 [gd_scene load_steps=5 format=3 uid="uid://bg8xejtwvnh6r"]
 
 [ext_resource type="PackedScene" uid="uid://cfpbtymwc5m73" path="res://Scenes/Deck.tscn" id="2_idj7w"]
-[ext_resource type="PackedScene" uid="uid://dj88ln2j5bhf" path="res://Scenes/GridPlacement.tscn" id="2_kln2b"]
+[ext_resource type="PackedScene" uid="uid://dj88ln2j5bhf" path="res://Scenes/CardSlotsManager.tscn" id="2_kln2b"]
 [ext_resource type="Script" uid="uid://p764x0pgi1cn" path="res://Scripts/Hand.gd" id="3_kln2b"]
 [ext_resource type="Script" uid="uid://5ixmwbpc4yc4" path="res://Scripts/BattleManager.gd" id="4_rgh2o"]
 
 [node name="Main" type="Node2D"]
 
 [node name="CardSlotsManager" parent="." instance=ExtResource("2_kln2b")]
+unique_name_in_owner = true
 z_index = -3
 
 [node name="Decks" type="Node2D" parent="."]
@@ -32,6 +33,7 @@ center_screen_x = 480.0
 
 [node name="OpponentHand" type="Node2D" parent="Hands"]
 script = ExtResource("3_kln2b")
+is_player_hand = false
 center_screen_x = 480.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]

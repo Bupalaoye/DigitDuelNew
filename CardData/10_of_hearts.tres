@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://g3vyihehirql"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_886r4"]
+
+[resource]
+script = ExtResource("1_886r4")
+card_id = &"10_of_hearts"
+card_name = "Ten"
+description = "A high card, often used to win hands."
+atk = 10
+def = 10
+texture_path = "res://PlayingCards/individual_sprites/10_of_hearts.png"
+suit = "hearts"
+rank = "10"

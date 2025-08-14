@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://cgsottp0ear1"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_jwlog"]
+
+[resource]
+script = ExtResource("1_jwlog")
+card_id = &"7_of_clubs"
+card_name = "Seven"
+description = "A good card for many hands."
+atk = 7
+def = 7
+texture_path = "res://PlayingCards/individual_sprites/7_of_clubs.png"
+suit = "clubs"
+rank = "7"

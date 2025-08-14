@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://8xjp6ko4gsaq"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_sl1dk"]
+
+[resource]
+script = ExtResource("1_sl1dk")
+card_id = &"king_of_spades"
+card_name = "King"
+description = "The second highest face card."
+atk = 13
+def = 13
+texture_path = "res://PlayingCards/individual_sprites/king_of_spades.png"
+suit = "spades"
+rank = "king"

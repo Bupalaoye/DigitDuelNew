@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://c66dgl3h5hasn"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_bx4c7"]
+
+[resource]
+script = ExtResource("1_bx4c7")
+card_id = &"ace_of_clubs"
+card_name = "Ace"
+description = "The highest card, can be low or high depending on the game."
+atk = 14
+def = 14
+texture_path = "res://PlayingCards/individual_sprites/ace_of_clubs.png"
+suit = "clubs"
+rank = "ace"

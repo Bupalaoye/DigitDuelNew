@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://dwmmkmc55h27j"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_wkiav"]
+
+[resource]
+script = ExtResource("1_wkiav")
+card_id = &"8_of_diamonds"
+card_name = "Eight"
+description = "A strong mid-range card."
+atk = 8
+def = 8
+texture_path = "res://PlayingCards/individual_sprites/8_of_diamonds.png"
+suit = "diamonds"
+rank = "8"

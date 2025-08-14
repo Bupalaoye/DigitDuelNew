@@ -1,8 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://bnqfvwkx3esd"]
+[gd_scene load_steps=9 format=3 uid="uid://bnqfvwkx3esd"]
 
 [ext_resource type="Script" uid="uid://dq80kjbuvka2a" path="res://Scenes/Card.gd" id="1_3p273"]
 [ext_resource type="Texture2D" uid="uid://bo8detdsjjv18" path="res://PlayingCards/individual_sprites/2_of_clubs.png" id="1_pnb5n"]
 [ext_resource type="Texture2D" uid="uid://ct6hk5jmmxp0d" path="res://PlayingCards/individual_sprites/back.png" id="2_h8wm0"]
+
+[sub_resource type="Theme" id="Theme_h8wm0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pnb5n"]
 size = Vector2(52, 77)
@@ -100,6 +102,46 @@ script = ExtResource("1_3p273")
 unique_name_in_owner = true
 texture = ExtResource("1_pnb5n")
 
+[node name="ColorRect" type="ColorRect" parent="DisplayImage"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -26.0
+offset_top = -61.5
+offset_right = -26.0
+offset_bottom = -38.5
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.847059, 0.752941, 0.764706, 0.827451)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="DisplayImage"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -26.0
+offset_top = -61.5
+offset_right = -26.0
+offset_bottom = -38.5
+grow_horizontal = 2
+grow_vertical = 0
+theme = SubResource("Theme_h8wm0")
+
+[node name="ATK" type="Label" parent="DisplayImage/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_colors/font_color = Color(0.801018, 0, 0.0239858, 1)
+text = "15"
+
+[node name="DEF" type="Label" parent="DisplayImage/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_colors/font_color = Color(0.235812, 0.283478, 1, 1)
+text = "15"
+
 [node name="BackImage" type="Sprite2D" parent="."]
 texture = ExtResource("2_h8wm0")
 
@@ -111,6 +153,7 @@ collision_mask = 0
 shape = SubResource("RectangleShape2D_pnb5n")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
 libraries = {
 &"": SubResource("AnimationLibrary_h8wm0")
 }

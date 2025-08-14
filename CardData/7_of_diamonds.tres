@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://dey6oot5ubtos"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_os4vf"]
+
+[resource]
+script = ExtResource("1_os4vf")
+card_id = &"7_of_diamonds"
+card_name = "Seven"
+description = "A good card for many hands."
+atk = 7
+def = 7
+texture_path = "res://PlayingCards/individual_sprites/7_of_diamonds.png"
+suit = "diamonds"
+rank = "7"

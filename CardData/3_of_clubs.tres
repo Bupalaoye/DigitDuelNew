@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://bitly8o0oni6w"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_riusu"]
+
+[resource]
+script = ExtResource("1_riusu")
+card_id = &"3_of_clubs"
+card_name = "Three"
+description = "A low card, but higher than a two."
+atk = 3
+def = 3
+texture_path = "res://PlayingCards/individual_sprites/3_of_clubs.png"
+suit = "clubs"
+rank = "3"

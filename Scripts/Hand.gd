@@ -1,3 +1,4 @@
+class_name Hand
 extends Node2D
 
 const CARD_WITDH = 60
@@ -25,7 +26,11 @@ func add_card_to_hand(card: Node2D, speed: float):
 	if card in cards_in_hand:
 		animation_card_to_position(card, card.starting_position, DEFAULT_CARD_MOVE_SPEED)
 	else:
-		cards_in_hand.insert(0, card)
+		if self.is_player_hand:
+			cards_in_hand.insert(0, card)
+		else:
+			cards_in_hand.append(card)
+		# ADDED: 确保卡牌的起始位置正确
 		update_hand_positions(speed)
 
 func remove_card_from_hand(card: Node2D):
@@ -38,7 +43,7 @@ func remove_card_from_hand(card: Node2D):
 # --- 这是修复和优化的核心函数 ---
 func update_hand_positions(speed: float):
 	var hand_size = cards_in_hand.size()
-	if hand_size == 0: 
+	if hand_size == 0:
 		return
 
 	# 1. 计算手牌的总宽度
@@ -74,3 +79,24 @@ func animation_card_to_position(card: Node2D, new_position: Vector2, speed: floa
 		# 示例：对手手牌可以翻转
 		# tween.tween_property(card, "rotation_degrees", 180, speed)
 		pass
+
+func get_highest_attack_card() -> Node2D:
+	# 1. 处理边缘情况：如果手牌是空的，直接返回 null。
+	if cards_in_hand.is_empty():
+		return null
+
+	# 2. 初始化追踪变量。
+	#    我们将从一个非常低的值开始，以确保任何卡牌的攻击力都比它高。
+	var highest_card: Node2D = null
+	var highest_atk_value = -1
+
+	# 3. 遍历手牌中的每一张卡牌。
+	for card in cards_in_hand:
+		# 安全检查：确保卡牌有数据 (card_data) 并且数据中有攻击力 (atk) 属性。
+		if card.card_data and card.card_data.atk > highest_atk_value:
+			# 4. 如果当前卡牌的攻击力更高，就更新我们的追踪变量。
+			highest_atk_value = card.card_data.atk
+			highest_card = card
+			
+	# 5. 循环结束后，highest_card 就是攻击力最高的卡牌。返回它。
+	return highest_card

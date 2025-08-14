@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://ccsq327p57dbf"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_3dtbm"]
+
+[resource]
+script = ExtResource("1_3dtbm")
+card_id = &"6_of_hearts"
+card_name = "Six"
+description = "A solid mid-range card."
+atk = 6
+def = 6
+texture_path = "res://PlayingCards/individual_sprites/6_of_hearts.png"
+suit = "hearts"
+rank = "6"
