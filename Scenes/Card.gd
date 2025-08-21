@@ -53,7 +53,7 @@ func highlight_card(hovered):
 
 
 func set_in_slot(state: bool):
-	is_in_slot = state
+	self.is_in_slot = state
 	collision_shape_2d.disabled = state
 	self.scale = Vector2(.9, .9) if state else Vector2(1, 1)
 	self.z_index = 1
@@ -83,6 +83,7 @@ func play_flip_anim():
 
 func play_hit_animation():
 	var tween = get_tree().create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, "scale", Vector2(1.1, 1.1), 0.2)
+	tween.tween_property(self, "scale", Vector2(1.1, 1.1), 0.1)
+	tween.tween_property(self, "scale", Vector2(.9, .9), 0.1)
 	tween.tween_property(self, 'modulate', Color.RED, .1)
 	tween.tween_property(self, 'modulate', Color.WHITE, .1)
