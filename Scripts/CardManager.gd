@@ -38,17 +38,18 @@ func finish_drag():
 		
 		var card_slot_found = raycast_check_for_card_slot()
 		
-		# MODIFIED: 只有玩家的卡牌才能放入玩家的槽位
+		# 只有玩家的卡牌才能放入玩家的槽位
 		if card_slot_found and not card_slot_found.card_in_slot and card_slot_found.owner_is_player and card_being_dragged.is_player_card:
-			# MODIFIED: 从其原始手牌中移除
+			# 从其原始手牌中移除
 			if original_hand:
 				original_hand.remove_card_from_hand(card_being_dragged)
 				
 			card_being_dragged.set_in_slot(true)
 			card_slot_found.card_in_slot = true
 			card_being_dragged.position = card_slot_found.position
+			card_slot_found.card_instance = card_being_dragged
 		else:
-			# MODIFIED: 返回到其原始手牌
+			# 返回到其原始手牌
 			if original_hand:
 				original_hand.add_card_to_hand(card_being_dragged, 0.2) # 使用一个较快的速度返回
 			else:
