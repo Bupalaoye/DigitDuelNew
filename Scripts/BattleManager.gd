@@ -6,16 +6,28 @@ extends Node
 @onready var opponent_hand: Hand = $"../Hands/OpponentHand"
 @onready var player_deck: Deck = %PlayerDeck
 @onready var card_slots_manager: CardSlotsManager = %CardSlotsManager
+@onready var opponent_hp_label: Label = %OpponentHP
+@onready var player_hp_label: Label = %PlayerHP
 
 const OPPONENT_CARD_SPEED = .4
 const ATTACK_ANIM_DURATION = 0.3
 const PAUSE_BETWEEN_ATTACKS = 0.4
+
+const PLAYER_HP : int = 30
+const OPPONENT_HP :int = 30
+var cur_player_hp : int = 0
+var cur_opponent_hp : int = 0
 
 
 func _ready() -> void:
 	end_turn.pressed.connect(_on_end_turn_pressed)
 	battle_timer.one_shot = true
 	battle_timer.wait_time = 1.0
+	
+	self.cur_player_hp = PLAYER_HP
+	self.cur_opponent_hp = OPPONENT_HP
+	update_hp_display()
+
 
 
 func _on_end_turn_pressed() -> void:
@@ -150,9 +162,14 @@ func destroy_card(card_to_destroy: Node2D) -> void:
 		card_to_destroy.queue_free()
 
 
-## 辅助函数 (无需改动)
 func find_slot_for_card(card_instance: Node2D) -> Node2D:
 	for slot in card_slots_manager.get_children():
 		if slot.card_instance == card_instance:
 			return slot
 	return null
+
+func update_hp_display():
+	if player_hp_label:
+		player_hp_label.text = "Player HP: %d" % max(0, self.cur_player_hp)
+	if opponent_hp_label:
+		opponent_hp_label.text = "Opponent HP: %d" % max(0, self.cur_opponent_hp)

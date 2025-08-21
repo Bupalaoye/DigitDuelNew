@@ -56,3 +56,21 @@ script = ExtResource("4_rgh2o")
 
 [node name="BattleTimer" type="Timer" parent="BattleManager"]
 unique_name_in_owner = true
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="OpponentHP" type="Label" parent="Node2D"]
+unique_name_in_owner = true
+offset_left = 53.0
+offset_top = 36.0
+offset_right = 93.0
+offset_bottom = 59.0
+text = "30"
+
+[node name="PlayerHP" type="Label" parent="Node2D"]
+unique_name_in_owner = true
+offset_left = 53.0
+offset_top = 380.0
+offset_right = 93.0
+offset_bottom = 403.0
+text = "30"
