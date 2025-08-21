@@ -21,7 +21,6 @@ func opponent_turn():
 	end_turn.visible = false
 	
 	opponent_deck.on_new_turn_started()
-	player_deck.on_new_turn_started()
 	battle_timer.start()
 	await  battle_timer.timeout
 	
@@ -43,6 +42,9 @@ func opponent_turn():
 func end_opponent_turn():
 	end_turn.disabled = false
 	end_turn.visible = true
+	player_deck.on_new_turn_started()
+	if player_deck.player_deck.size() != 0:
+		player_deck.draw_card()
 
 func try_play_card_with_highest_card():
 	# play the card in hard with highest attack 
