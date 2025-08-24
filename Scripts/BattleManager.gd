@@ -162,6 +162,7 @@ func destroy_card(card_to_destroy: Node2D) -> void:
 		card_to_destroy.queue_free()
 
 
+## 辅助函数 (无需改动)
 func find_slot_for_card(card_instance: Node2D) -> Node2D:
 	for slot in card_slots_manager.get_children():
 		if slot.card_instance == card_instance:
