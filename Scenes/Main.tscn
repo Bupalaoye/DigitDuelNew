@@ -30,7 +30,7 @@ target_hand_path = NodePath("../../Hands/OpponentHand")
 
 [node name="PlayerHand" type="Node2D" parent="Hands"]
 script = ExtResource("3_kln2b")
-hand_y_position = 1080.0
+hand_y_position = 1000.0
 center_screen_x = 960.0
 
 [node name="OpponentHand" type="Node2D" parent="Hands"]

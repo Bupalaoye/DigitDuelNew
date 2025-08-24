@@ -1,9 +1,8 @@
 class_name Hand
 extends Node2D
 
-const CARD_WITDH = 60
 const DEFAULT_CARD_MOVE_SPEED = 0.1
-const CARD_SPACING = 60
+const CARD_SPACING = 180
 
 # ADDED: 导出变量，用于在编辑器中配置
 @export var is_player_hand: bool = true # 用来区分是玩家手牌还是对手手牌
