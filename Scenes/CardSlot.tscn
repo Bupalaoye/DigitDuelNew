@@ -3,9 +3,10 @@
 [ext_resource type="Script" uid="uid://cqalr5lopjwdc" path="res://Scenes/CardSlot.gd" id="1_r3qn0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pnb5n"]
-size = Vector2(52, 77)
+size = Vector2(200, 300)
 
 [node name="Card" type="Node2D"]
+scale = Vector2(0.8, 0.8)
 script = ExtResource("1_r3qn0")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -14,10 +15,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -26.0
-offset_top = -38.5
-offset_right = 26.0
-offset_bottom = 38.5
+offset_left = -100.0
+offset_top = -150.0
+offset_right = 100.0
+offset_bottom = 150.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 1, 0.172549)

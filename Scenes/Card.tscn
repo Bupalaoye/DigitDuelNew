@@ -1,13 +1,13 @@
 [gd_scene load_steps=9 format=3 uid="uid://bnqfvwkx3esd"]
 
 [ext_resource type="Script" uid="uid://dq80kjbuvka2a" path="res://Scenes/Card.gd" id="1_3p273"]
-[ext_resource type="Texture2D" uid="uid://bo8detdsjjv18" path="res://PlayingCards/individual_sprites/2_of_clubs.png" id="1_pnb5n"]
-[ext_resource type="Texture2D" uid="uid://ct6hk5jmmxp0d" path="res://PlayingCards/individual_sprites/back.png" id="2_h8wm0"]
+[ext_resource type="Texture2D" uid="uid://bvastah22phtt" path="res://Assets/azure_plot.png" id="2_3m7nw"]
+[ext_resource type="Texture2D" uid="uid://b6mfss5q07rhu" path="res://Assets/the_dueling_crest.png" id="3_h8wm0"]
 
 [sub_resource type="Theme" id="Theme_h8wm0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pnb5n"]
-size = Vector2(52, 77)
+size = Vector2(360, 520)
 
 [sub_resource type="Animation" id="Animation_h8wm0"]
 length = 0.001
@@ -97,33 +97,46 @@ _data = {
 
 [node name="Card" type="Node2D"]
 script = ExtResource("1_3p273")
+in_hand_scale = Vector2(0.5, 0.5)
+in_slot_scale = Vector2(0.4, 0.4)
+in_dragging_scale = Vector2(0.6, 0.6)
+in_view_scale = Vector2(1, 1)
 
-[node name="DisplayImage" type="Sprite2D" parent="."]
+[node name="DisplayImage" type="TextureRect" parent="."]
 unique_name_in_owner = true
-texture = ExtResource("1_pnb5n")
+custom_minimum_size = Vector2(360, 520)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -260.0
+offset_right = 180.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_3m7nw")
+expand_mode = 1
 
 [node name="ColorRect" type="ColorRect" parent="DisplayImage"]
+layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -26.0
-offset_top = -61.5
-offset_right = -26.0
-offset_bottom = -38.5
+offset_top = -130.0
 grow_horizontal = 2
 grow_vertical = 0
 color = Color(0.847059, 0.752941, 0.764706, 0.827451)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="DisplayImage"]
+layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -26.0
-offset_top = -61.5
-offset_right = -26.0
-offset_bottom = -38.5
+offset_top = -99.0
 grow_horizontal = 2
 grow_vertical = 0
 theme = SubResource("Theme_h8wm0")
@@ -131,19 +144,34 @@ theme = SubResource("Theme_h8wm0")
 [node name="ATK" type="Label" parent="DisplayImage/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 2
+size_flags_horizontal = 6
 theme_override_colors/font_color = Color(0.801018, 0, 0.0239858, 1)
+theme_override_font_sizes/font_size = 72
 text = "15"
 
 [node name="DEF" type="Label" parent="DisplayImage/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 6
 theme_override_colors/font_color = Color(0.235812, 0.283478, 1, 1)
+theme_override_font_sizes/font_size = 72
 text = "15"
 
-[node name="BackImage" type="Sprite2D" parent="."]
-texture = ExtResource("2_h8wm0")
+[node name="BackImage" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(360, 520)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -260.0
+offset_right = 180.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_h8wm0")
+expand_mode = 1
 
 [node name="Area2D" type="Area2D" parent="."]
 unique_name_in_owner = true

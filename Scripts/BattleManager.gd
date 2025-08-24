@@ -76,7 +76,8 @@ func try_play_card_with_highest_card() -> void:
 	var tween = get_tree().create_tween()
 	tween.tween_property(highest_card, 'position', random_opponent_target_slot.position, OPPONENT_CARD_SPEED)
 	highest_card.play_flip_anim()
-	highest_card.set_in_slot(true)
+	
+	highest_card.set_state(highest_card.CardState.IN_SLOT)
 	random_opponent_target_slot.card_instance = highest_card
 	random_opponent_target_slot.card_in_slot = true
 	

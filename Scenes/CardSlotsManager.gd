@@ -7,12 +7,12 @@ class_name CardSlotsManager
 @export var columns: int = 5
 @export var card_width: float = 52
 @export var card_height: float = 77
-@export var h_spacing: float = 20.0 # 水平间距
-@export var v_spacing: float = 15.0 # 区域内的垂直间距
+@export var h_spacing: float = 170.0 # 水平间距
+@export var v_spacing: float = 215.0 # 区域内的垂直间距
 
 @export_group("Player/Opponent Setup")
-@export var slots_per_player: int = 10
-@export var center_divider_spacing: float = 50.0 # 对手和玩家区域之间的“分界线”间距
+@export var slots_per_player: int = 5
+@export var center_divider_spacing: float = 260.0 # 对手和玩家区域之间的“分界线”间距
 
 # --- 资源预加载 ---
 const CARD_SLOT = preload("uid://beayidfusy8gk")

@@ -28,7 +28,7 @@ func on_left_mouse_released():
 
 func start_drag(card):
 	card_being_dragged = card
-	card.start_drag(true)
+	card.set_state(card.CardState.DRAGGING)
 	
 
 func finish_drag():
@@ -44,7 +44,7 @@ func finish_drag():
 			if original_hand:
 				original_hand.remove_card_from_hand(card_being_dragged)
 				
-			card_being_dragged.set_in_slot(true)
+			card_being_dragged.set_state(card_being_dragged.CardState.IN_SLOT)
 			card_slot_found.card_in_slot = true
 			card_being_dragged.position = card_slot_found.position
 			card_slot_found.card_instance = card_being_dragged
@@ -57,7 +57,6 @@ func finish_drag():
 				push_warning("Dragged card has no original hand to return to. Hiding card.")
 				card_being_dragged.hide()
 
-		card_being_dragged.is_draging = false
 		card_being_dragged = null
 
 
