@@ -15,13 +15,15 @@ z_index = -3
 
 [node name="PlayerDeck" parent="Decks" instance=ExtResource("2_idj7w")]
 unique_name_in_owner = true
-position = Vector2(60, 556)
+position = Vector2(1862, 780)
+rotation = 0.785398
 is_player = true
 target_hand_path = NodePath("../../Hands/PlayerHand")
 
 [node name="OpponentDeck" parent="Decks" instance=ExtResource("2_idj7w")]
 unique_name_in_owner = true
-position = Vector2(902, 58)
+position = Vector2(1856, 260)
+rotation = -0.785398
 target_hand_path = NodePath("../../Hands/OpponentHand")
 
 [node name="Hands" type="Node2D" parent="."]
@@ -41,37 +43,41 @@ center_screen_x = 960.0
 
 [node name="EndTurn" type="Button" parent="CanvasLayer"]
 unique_name_in_owner = true
-anchors_preset = 4
+anchors_preset = 6
+anchor_left = 1.0
 anchor_top = 0.5
+anchor_right = 1.0
 anchor_bottom = 0.5
+offset_left = -78.0
 offset_top = -15.5
-offset_right = 78.0
 offset_bottom = 15.5
+grow_horizontal = 0
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_font_sizes/font_size = 70
 text = "End Turn"
+
+[node name="OpponentHP" type="Label" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_right = 80.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 70
+text = "30"
+
+[node name="PlayerHP" type="Label" parent="CanvasLayer"]
+unique_name_in_owner = true
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -96.0
+offset_right = 80.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 70
+text = "30"
 
 [node name="BattleManager" type="Node" parent="."]
 script = ExtResource("4_rgh2o")
 
 [node name="BattleTimer" type="Timer" parent="BattleManager"]
 unique_name_in_owner = true
-
-[node name="Node2D" type="Node2D" parent="."]
-
-[node name="OpponentHP" type="Label" parent="Node2D"]
-unique_name_in_owner = true
-offset_left = 53.0
-offset_top = 36.0
-offset_right = 93.0
-offset_bottom = 59.0
-text = "30"
-
-[node name="PlayerHP" type="Label" parent="Node2D"]
-unique_name_in_owner = true
-offset_left = 53.0
-offset_top = 380.0
-offset_right = 93.0
-offset_bottom = 403.0
-text = "30"

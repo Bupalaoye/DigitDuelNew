@@ -27,7 +27,7 @@ func add_card_to_hand(card: Node2D, speed: float):
 	if card in cards_in_hand:
 		animation_card_to_position(card, card.starting_position, DEFAULT_CARD_MOVE_SPEED)
 	else:
-		if self.is_player_hand:
+		if not self.is_player_hand:
 			cards_in_hand.insert(0, card)
 		else:
 			cards_in_hand.append(card)

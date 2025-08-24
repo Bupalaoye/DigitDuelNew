@@ -6,11 +6,12 @@ extends Node2D
 @export var target_hand_path: NodePath
 
 @onready var collision_shape_2d: CollisionShape2D = %CollisionShape2D
-@onready var card_num: RichTextLabel = %CardNum
-@onready var display_image: Sprite2D = %DisplayImage
+@onready var card_num: Label = %CardNum
+@onready var display_image: TextureRect = %DisplayImage
 const CARD_SCENE = preload("uid://bnqfvwkx3esd")
 const HAND_COUNT = 8
-var player_deck = []	# card id array
+
+var player_deck = [] # card id array
 var drawn_card_this_turn := false
 var PLAYER_STARTING_CARD_NUM := 4
 
