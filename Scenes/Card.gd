@@ -71,7 +71,13 @@ func set_state(new_state: CardState):
 	if new_state == current_state:
 		return
 	
+	self._on_state_exit(current_state)
 	current_state = new_state
+	self._on_state_enter(new_state)
+		
+	_update_visuals()
+
+func _on_state_enter(new_state: CardState):
 	match new_state:
 		CardState.IN_HAND:
 			base_scale = in_hand_scale
@@ -87,9 +93,21 @@ func set_state(new_state: CardState):
 			collision_shape_2d.disabled = false
 		CardState.IN_VIEW:
 			pass
+
+# clear the state when exit
+func _on_state_exit(old_state: CardState):
+	is_hovered = false
+	match old_state:
+		CardState.IN_HAND:
+			pass
+		CardState.IN_SLOT:
+			pass
+		CardState.DRAGGING:
+			pass
+		CardState.IN_VIEW:
+			pass
 		
 	_update_visuals()
-
 
 func _update_visuals():
 	var target_scale = base_scale

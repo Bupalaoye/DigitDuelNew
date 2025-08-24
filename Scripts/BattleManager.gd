@@ -73,15 +73,17 @@ func try_play_card_with_highest_card() -> void:
 	
 	opponent_hand.remove_card_from_hand(highest_card)
 
-	var tween = get_tree().create_tween()
-	tween.tween_property(highest_card, 'position', random_opponent_target_slot.position, OPPONENT_CARD_SPEED)
+	var move_tween = get_tree().create_tween()
+	# 1. move card to slot 
+	move_tween.tween_property(highest_card, 'position', random_opponent_target_slot.position, OPPONENT_CARD_SPEED)
 	highest_card.play_flip_anim()
 	
+	# update card state and slot info
 	highest_card.set_state(highest_card.CardState.IN_SLOT)
 	random_opponent_target_slot.card_instance = highest_card
 	random_opponent_target_slot.card_in_slot = true
 	
-	await get_tree().create_timer(1.0).timeout
+	await get_tree().create_timer(0.5).timeout
 
 
 # ==================================================================

@@ -98,7 +98,7 @@ _data = {
 [node name="Card" type="Node2D"]
 script = ExtResource("1_3p273")
 in_hand_scale = Vector2(0.5, 0.5)
-in_slot_scale = Vector2(0.4, 0.4)
+in_slot_scale = Vector2(0.46, 0.46)
 in_dragging_scale = Vector2(0.6, 0.6)
 in_view_scale = Vector2(1, 1)
 
