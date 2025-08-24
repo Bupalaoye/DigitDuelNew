@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://cc7m0gd7g1400"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_m4nkr"]
+
+[resource]
+script = ExtResource("1_m4nkr")
+card_id = &"AP-002"
+card_name = "智慧卷轴"
+cost = 3
+atk = 0
+def = 0
+texture_path = "uid://cjqgwob8q1pv4"
+description = ""
+rules_text = "抽两张牌。"
+flavor_text = "未来的一切，都写在这里。"
+metadata/_custom_type_script = "uid://bx28oyqk0nmn2"

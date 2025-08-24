@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://c7y5hmtx7jrc4"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_ts3s7"]
+
+[resource]
+script = ExtResource("1_ts3s7")
+card_id = &"AP-003"
+card_name = "潮汐巨人"
+cost = 8
+atk = 8
+def = 8
+texture_path = "uid://cem1bnyo53l04"
+description = ""
+rules_text = "嘲讽"
+flavor_text = "他的出现，预示着战局的终结。"
+metadata/_custom_type_script = "uid://bx28oyqk0nmn2"

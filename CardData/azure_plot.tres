@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://6htypmdagtdc"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_fuxxl"]
+
+[resource]
+script = ExtResource("1_fuxxl")
+card_id = &"RE-001"
+card_name = "冲锋队员"
+cost = 1
+atk = 2
+def = 1
+texture_path = "uid://ov6idk54jvib"
+description = ""
+rules_text = "冲锋"
+flavor_text = "第一滴血是我的！"
+metadata/_custom_type_script = "uid://bx28oyqk0nmn2"

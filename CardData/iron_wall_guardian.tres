@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://wf2de427rlg6"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_ieg2i"]
+
+[resource]
+script = ExtResource("1_ieg2i")
+card_id = &"AP-001"
+card_name = "铁壁卫士"
+cost = 2
+atk = 1
+def = 4
+texture_path = "uid://ccvhytoypn2jn"
+description = ""
+rules_text = "嘲讽"
+flavor_text = "想过去？先问问我的盾牌。"
+metadata/_custom_type_script = "uid://bx28oyqk0nmn2"

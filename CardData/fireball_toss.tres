@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://00xp66yyqe8r"]
+
+[ext_resource type="Script" uid="uid://bx28oyqk0nmn2" path="res://Scripts/Data/CardData.gd" id="1_ksog4"]
+
+[resource]
+script = ExtResource("1_ksog4")
+card_id = &"RE-002"
+card_name = "燃火投掷"
+cost = 2
+atk = 0
+def = 0
+texture_path = "uid://88k4v81jy78d"
+description = ""
+rules_text = "对任意目标造成3点伤害。"
+flavor_text = "来个火热的拥抱吧！"
+metadata/_custom_type_script = "uid://bx28oyqk0nmn2"
