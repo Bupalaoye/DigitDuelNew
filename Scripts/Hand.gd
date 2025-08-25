@@ -18,9 +18,12 @@ const DEFAULT_CARD_MOVE_SPEED = 0.1
 # the max arc angle (in degrees) that the cards will be spread out over
 @export var max_arc_angle: float = 60.0
 
-# MODIFIED: 变量名从 player_hand 改为 cards_in_hand
 var cards_in_hand: Array[Node2D] = []
 
+# record cur dragged card in hand
+var dragged_card_in_hand: Card = null
+# record the index of the placeholder for the dragged card
+var placeholder_index: int = -1
 
 func _ready() -> void:
 	pass
@@ -50,47 +53,104 @@ func remove_card_from_hand(card: Node2D):
 		cards_in_hand.erase(card)
 		update_hand_positions(DEFAULT_CARD_MOVE_SPEED)
 
-# --- 这是修复和优化的核心函数 ---
 func update_hand_positions(speed: float):
-	var hand_size = cards_in_hand.size()
-	if hand_size == 0:
+	# create tmp cards list 
+	var cards_to_position = cards_in_hand.duplicate()
+	if is_instance_valid(dragged_card_in_hand):
+		# if dragging, remove it from the list to position
+		cards_to_position.erase(dragged_card_in_hand)
+
+	var hand_size = cards_to_position.size()
+	
+	# if dragging, the layout size is hand size + 1 (for placeholder)
+	# else just hand size
+	var layout_size = hand_size + 1 if is_instance_valid(dragged_card_in_hand) else hand_size
+	if layout_size == 0:
 		return
 
-	# 1. 计算当前手牌应该展开的总角度
-	# (hand_size - 1) * angle_pre_card 是理论总角度
-	# 我们用 min() 来确保它不会超过设定的最大值 max_arc_angle
-	var total_arc_angle = min((hand_size - 1) * angle_pre_card, max_arc_angle)
-
-	# 2. 计算第一张牌的起始角度
-	# 为了让整个弧形居中，我们将总角度的一半作为负的起始点
+	var total_arc_angle = min((layout_size - 1) * angle_pre_card, max_arc_angle)
 	var start_angle_deg = - total_arc_angle / 2.0 
 	if not self.is_player_hand:
-		# 对手卡牌反一下
 		start_angle_deg += 180
-	# 3. 计算每张牌之间的角度步长
-	# 如果只有一张牌，步长为0，它会正好在中间
-	var angle_step_deg = total_arc_angle / (hand_size - 1) if hand_size > 1 else 0
 
-	# 4. 遍历所有手牌，计算并应用它们的新位置和旋转
-	for i in range(hand_size):
-		var card = cards_in_hand[i]
+	var angle_step_deg = total_arc_angle / (layout_size - 1) if layout_size > 1 else 0
+
+	var card_idx = 0
+	for i in range(layout_size):
+		# if dragging, skip the placeholder index
+		if is_instance_valid(dragged_card_in_hand) and i == placeholder_index:
+			continue
+
+		# safety check
+		if card_idx >= cards_to_position.size():
+			break
+			
+		var card = cards_to_position[card_idx]
+		card_idx += 1
 		
-		# a. 计算当前卡牌的目标角度
 		var card_angle_deg = start_angle_deg + i * angle_step_deg
-		# 将角度转换为弧度，因为Godot的sin/cos函数使用弧度
 		var card_angle_rad = deg_to_rad(card_angle_deg)
 		
-		# b. 计算卡牌的目标位置 (极坐标转笛卡尔坐标)
-		# 我们以 arc_center_offset 为圆心，arc_radius 为半径来计算位置
-		# 我们从上方(PI/2)开始计算，所以要减去 card_angle_rad
-		var target_pos: Vector2 = Vector2.ZERO
-		target_pos = arc_center_offset + Vector2(
-			arc_radius * sin(card_angle_rad), # X坐标
-			-1 * arc_radius * cos(card_angle_rad) # Y坐标
+		var target_pos: Vector2 = arc_center_offset + Vector2(
+			arc_radius * sin(card_angle_rad),
+			-1 * arc_radius * cos(card_angle_rad)
 		)
-		# c. update layout
+		
 		card.starting_rotation = card_angle_deg
 		card.move_to_layout_transform(target_pos, card_angle_deg, speed)
+
+
+# sort card in hand
+func start_reordering(card: Card):
+	if not is_player_hand: return # only player hand can reorder
+	if card in cards_in_hand:
+		dragged_card_in_hand = card
+		# set placeholder index to current card index else -1
+		placeholder_index = cards_in_hand.find(card)
+		update_hand_positions(0.1)
+
+
+# update placeholder position based on mouse position
+func update_placeholder(mouse_pos: Vector2):
+	if not is_instance_valid(dragged_card_in_hand):
+		return
+
+	var new_index = 0
+	# iterate through cards in hand to find new index 
+	for card in cards_in_hand:
+		if card == dragged_card_in_hand:
+			continue
+		# if mouse x is greater than card x position, move to next index
+		if mouse_pos.x > card.global_position.x - (card.display_image.size.x * card.display_image.scale.x / 2):
+			new_index += 1
+	
+	# if new index is different from current placeholder index, update and refresh layout
+	if new_index != placeholder_index:
+		placeholder_index = new_index
+		update_hand_positions(0.1)
+
+
+# called by CardManager when drag ends
+func finish_reordering():
+	if not is_instance_valid(dragged_card_in_hand):
+		return
+		
+	var card_to_reorder = dragged_card_in_hand
+	
+	# clear the dragged card reference
+	dragged_card_in_hand = null
+	
+	# remove from current position
+	cards_in_hand.erase(card_to_reorder)
+	# insert at placeholder index
+	cards_in_hand.insert(placeholder_index, card_to_reorder)
+	
+	# update the state 
+	card_to_reorder.set_state(Card.CardState.IN_HAND)
+
+	# reset placeholder index
+	placeholder_index = -1
+	update_hand_positions(0.2)
 
 func get_highest_attack_card() -> Node2D:
 	# 1. 处理边缘情况：如果手牌是空的，直接返回 null。

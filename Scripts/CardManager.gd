@@ -18,6 +18,11 @@ func _process(_delta: float) -> void:
 		mouse_pos.y = clampf(mouse_pos.y, 0, screen_size.y)
 		card_being_dragged.position = mouse_pos
 
+		# try update cards in hand placeholder if possible
+		var original_hand = card_being_dragged.current_hand
+		if is_instance_valid(original_hand):
+			original_hand.update_placeholder(mouse_pos)
+
 
 func on_left_mouse_clicked():
 	pass
@@ -29,6 +34,11 @@ func on_left_mouse_released():
 func start_drag(card):
 	card_being_dragged = card
 	card.set_state(card.CardState.DRAGGING)
+
+	# if this card belongs to a hand, notify the hand to start reordering
+	var original_hand = card.current_hand
+	if is_instance_valid(original_hand):
+		original_hand.start_reordering(card)
 	
 
 func finish_drag():
@@ -52,7 +62,7 @@ func finish_drag():
 		else:
 			# 返回到其原始手牌
 			if original_hand:
-				original_hand.add_card_to_hand(card_being_dragged, 0.2) # 使用一个较快的速度返回
+				original_hand.finish_reordering()
 			else:
 				# 如果卡牌没有原始手牌（异常情况），则销毁或放到弃牌堆
 				push_warning("Dragged card has no original hand to return to. Hiding card.")
