@@ -183,8 +183,20 @@ func play_flip_anim():
 	animation_player.play("card_flip")
 
 func play_hit_animation():
-	var tween = get_tree().create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, "scale", base_scale * 1.1, 0.1)
-	tween.chain().tween_property(self, "scale", base_scale, 0.1)
-	tween.tween_property(self, 'modulate', Color.RED, .1)
-	tween.chain().tween_property(self, 'modulate', Color.WHITE, .1)
+	# 基础的闪烁和缩放
+	var tween_effects = get_tree().create_tween().set_parallel().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	tween_effects.tween_property(self, "scale", base_scale * 1.1, 0.1)
+	tween_effects.chain().tween_property(self, "scale", base_scale, 0.1)
+	tween_effects.tween_property(self, 'modulate', Color.RED, .1)
+	tween_effects.chain().tween_property(self, 'modulate', Color.WHITE, .1)
+
+	# 击退效果
+	var original_pos = self.position
+	# 假设攻击总是来自正下方，所以向后（Y轴正方向）移动
+	var knockback_pos = original_pos - Vector2(0, 20) 
+	
+	var tween_knockback = get_tree().create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	# 快速击退
+	tween_knockback.tween_property(self, "position", knockback_pos, 0.08)
+	# 慢速返回
+	tween_knockback.chain().tween_property(self, "position", original_pos, 0.25)

@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bg8xejtwvnh6r"]
+[gd_scene load_steps=7 format=3 uid="uid://bg8xejtwvnh6r"]
 
 [ext_resource type="PackedScene" uid="uid://cfpbtymwc5m73" path="res://Scenes/Deck.tscn" id="2_idj7w"]
 [ext_resource type="PackedScene" uid="uid://dj88ln2j5bhf" path="res://Scenes/CardSlotsManager.tscn" id="2_kln2b"]
 [ext_resource type="Script" uid="uid://p764x0pgi1cn" path="res://Scripts/Hand.gd" id="3_kln2b"]
 [ext_resource type="Texture2D" uid="uid://d183yqomhq0ye" path="res://Assets/Background/peaceful_bg_2.png" id="4_pbw6q"]
 [ext_resource type="Script" uid="uid://5ixmwbpc4yc4" path="res://Scripts/BattleManager.gd" id="4_rgh2o"]
+[ext_resource type="Script" uid="uid://cypdxv6xecl63" path="res://Scripts/Camera.gd" id="6_v1gob"]
 
 [node name="Main" type="Node2D"]
 
@@ -96,5 +97,7 @@ script = ExtResource("4_rgh2o")
 [node name="BattleTimer" type="Timer" parent="BattleManager"]
 unique_name_in_owner = true
 
-[node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(876, -800)
+[node name="MainCamera" type="Camera2D" parent="."]
+unique_name_in_owner = true
+offset = Vector2(960, 540)
+script = ExtResource("6_v1gob")

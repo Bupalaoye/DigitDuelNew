@@ -8,15 +8,22 @@ extends Node
 @onready var card_slots_manager: CardSlotsManager = %CardSlotsManager
 @onready var opponent_hp_label: Label = %OpponentHP
 @onready var player_hp_label: Label = %PlayerHP
+@onready var main_camera: Camera2D = %MainCamera
 
 const OPPONENT_CARD_SPEED = .4
 const ATTACK_ANIM_DURATION = 0.3
 const PAUSE_BETWEEN_ATTACKS = 0.4
 
-const PLAYER_HP : int = 30
-const OPPONENT_HP :int = 30
-var cur_player_hp : int = 0
-var cur_opponent_hp : int = 0
+# const HIT_EFFECT_SCENE = preload("res://Scenes/HitEffect.tscn")
+const ATTACK_CHARGE_DURATION = 0.4
+const ATTACK_SPIN_DURATION = 0.3
+const ATTACK_DASH_DURATION = 0.15
+
+
+const PLAYER_HP: int = 30
+const OPPONENT_HP: int = 30
+var cur_player_hp: int = 0
+var cur_opponent_hp: int = 0
 
 
 func _ready() -> void:
@@ -27,7 +34,6 @@ func _ready() -> void:
 	self.cur_player_hp = PLAYER_HP
 	self.cur_opponent_hp = OPPONENT_HP
 	update_hp_display()
-
 
 
 func _on_end_turn_pressed() -> void:
@@ -63,7 +69,7 @@ func end_opponent_turn() -> void:
 
 func try_play_card_with_highest_card() -> void:
 	if opponent_hand.cards_in_hand.size() == 0:
-		return 
+		return
 	
 	var random_opponent_target_slot = card_slots_manager.get_free_opponent_card_slots().pick_random()
 	if not random_opponent_target_slot: return
@@ -112,38 +118,82 @@ func start_battle_phase() -> void:
 ## --- 重构后的核心战斗函数 ---
 ## 解析单次战斗，现在是同时结算伤害
 func resolve_combat(player_card: Node2D, opponent_card: Node2D) -> void:
-	# 1. 预先记录双方的攻击力。这是关键！
+	# 1. 数据准备
 	var player_atk = player_card.current_atk
 	var opponent_atk = opponent_card.current_atk
 
-	# 2. 播放攻击动画 (让玩家卡牌主动攻击)
-	var original_pos = player_card.position
-	var target_pos = opponent_card.position
-	
-	var tween = create_tween()
-	tween.tween_property(player_card, "position", original_pos.lerp(target_pos, 0.3), ATTACK_ANIM_DURATION / 2.0).set_trans(Tween.TRANS_SINE)
-	tween.chain().tween_property(player_card, "position", original_pos, ATTACK_ANIM_DURATION / 2.0).set_trans(Tween.TRANS_SINE)
-	
+	var attacker = player_card
+	var target = opponent_card
+
+	var original_pos = attacker.position
+	var target_pos = target.position
+	# 蓄力位置：在原位置左上方
+	var charge_pos = original_pos + Vector2(-100, -150)
+
+	# --- 2. 动画序列开始 ---
+	var tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
+
+	# **分镜1: 蓄力 - 移动到左上角**
+	# 播放充能音效 (假设你有一个AudioStreamPlayer叫SFXPlayer)
+	# $SFXPlayer.stream = load("res://sounds/charge_up.wav")
+	# $SFXPlayer.play()
+	tween.tween_property(attacker, "position", charge_pos, ATTACK_CHARGE_DURATION)
+
+	# **分镜2: 力量积蓄 - 快速旋转**
+	# 使用 chain() 来确保这个动画在上一个动画结束后开始
+	# 使用 parallel() 来让位移和旋转同时进行
+	tween.chain().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+	var spin_tween = tween.parallel()
+	spin_tween.tween_property(attacker, "rotation_degrees", 720, ATTACK_SPIN_DURATION) # 旋转2圈
+	spin_tween.tween_property(attacker, "scale", attacker.scale * 1.2, ATTACK_SPIN_DURATION) # 旋转时稍微变大
+
+	# **分镜3: 攻击 - 冲刺向目标**
+	# 播放冲刺音效
+	# $SFXPlayer.stream = load("res://sounds/whoosh.wav")
+	# $SFXPlayer.play()
+	tween.chain().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO) # 使用指数缓动模拟爆发力
+	tween.tween_property(attacker, "position", target_pos, ATTACK_DASH_DURATION)
+
+	# 等待冲刺动画完成
 	await tween.finished
 
-	# 3. 同时计算伤害
-	print("Applying simultaneous damage...")
+	# --- 3. 命中瞬间 ---
+
+	# 播放命中音效和屏幕特效
+	# $SFXPlayer.stream = load("res://sounds/impact.wav")
+	# $SFXPlayer.play()
+	self.main_camera.shake_camera(10, 0.2) # 调用镜头震动
+
+	# 在目标位置生成打击特效
+	# var hit_effect = HIT_EFFECT_SCENE.instantiate()
+	# target.add_child(hit_effect) # 将特效加为子节点，这样它会跟随卡牌
+	# hit_effect.global_position = target.global_position
+
+	# 同时计算伤害和更新UI
 	player_card.current_def -= opponent_atk
 	opponent_card.current_def -= player_atk
-
-	# 4. 同时更新UI并播放受击动画
 	player_card.update_stats_display()
 	opponent_card.update_stats_display()
+
+	# 同时播放双方的受击动画
 	player_card.play_hit_animation()
 	opponent_card.play_hit_animation()
-	
-	print("%s's DEF is now %d. %s's DEF is now %d" % [player_card.name, player_card.current_def, opponent_card.name, opponent_card.current_def])
 
-	# 5. 检查双方是否阵亡
-	# 注意：这里我们使用 "if" 而不是 "elif"，因为有可能双方同时被击败
+	# --- 4. 动画收尾 ---
+
+	# 等待一小段时间，让玩家看清伤害结果
+	await get_tree().create_timer(0.1).timeout
+
+	# 攻击者返回原位
+	var return_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+	return_tween.tween_property(attacker, "position", original_pos, 0.2)
+	return_tween.tween_property(attacker, "rotation_degrees", 0, 0.2) # 旋转归位
+	return_tween.tween_property(attacker, "scale", attacker.base_scale, 0.2) # 大小归位
+	await return_tween.finished
+
+	# --- 5. 检查卡牌阵亡 ---
 	if player_card.current_def <= 0:
 		await destroy_card(player_card)
-
 	if opponent_card.current_def <= 0:
 		await destroy_card(opponent_card)
 
