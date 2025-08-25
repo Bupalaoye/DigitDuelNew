@@ -7,7 +7,7 @@ func _ready() -> void:
 
 func shake_camera(amount: float, duration: float):
 	var update_shake_offset = func(shake_amount: float):
-		self.offset = Vector2(randf_range(-shake_amount, shake_amount), randf_range(-shake_amount, shake_amount))
+		self.offset = self.starting_offset + Vector2(randf_range(-shake_amount, shake_amount), randf_range(-shake_amount, shake_amount))
 
 	var tween = get_tree().create_tween()
 	# 使用随机数模拟不规则震动
