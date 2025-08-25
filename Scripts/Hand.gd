@@ -69,7 +69,7 @@ func update_hand_positions(speed: float):
 		return
 
 	var total_arc_angle = min((layout_size - 1) * angle_pre_card, max_arc_angle)
-	var start_angle_deg = - total_arc_angle / 2.0 
+	var start_angle_deg = - total_arc_angle / 2.0
 	if not self.is_player_hand:
 		start_angle_deg += 180
 
@@ -137,20 +137,30 @@ func finish_reordering():
 		
 	var card_to_reorder = dragged_card_in_hand
 	
-	# clear the dragged card reference
-	dragged_card_in_hand = null
-	
 	# remove from current position
 	cards_in_hand.erase(card_to_reorder)
 	# insert at placeholder index
-	cards_in_hand.insert(placeholder_index, card_to_reorder)
+	var final_idx = clamp(placeholder_index, 0, cards_in_hand.size())
+	cards_in_hand.insert(final_idx, card_to_reorder)
 	
 	# update the state 
 	card_to_reorder.set_state(Card.CardState.IN_HAND)
 
-	# reset placeholder index
-	placeholder_index = -1
+	_reset_reordering_state()
+
 	update_hand_positions(0.2)
+
+func _reset_reordering_state():
+	dragged_card_in_hand = null
+	placeholder_index = -1
+
+func cancel_reordering():
+	if not is_instance_valid(dragged_card_in_hand):
+		return
+	
+	_reset_reordering_state()
+	update_hand_positions(0.2)
+
 
 func get_highest_attack_card() -> Node2D:
 	# 1. 处理边缘情况：如果手牌是空的，直接返回 null。

@@ -53,6 +53,7 @@ func finish_drag():
 			# 从其原始手牌中移除
 			if original_hand:
 				original_hand.remove_card_from_hand(card_being_dragged)
+				original_hand.cancel_reordering()
 				
 			card_being_dragged.set_state(card_being_dragged.CardState.IN_SLOT)
 			card_slot_found.card_in_slot = true

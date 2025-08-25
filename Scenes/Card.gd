@@ -95,7 +95,6 @@ func _on_state_enter(new_state: CardState):
 			self.target_rotation = self.starting_rotation
 			collision_shape_2d.disabled = false
 		CardState.IN_SLOT:
-			print("Card entered IN_SLOT state")
 			base_scale = in_slot_scale
 			base_z_index = in_slot_z_index
 			collision_shape_2d.disabled = true
@@ -186,6 +185,6 @@ func play_flip_anim():
 func play_hit_animation():
 	var tween = get_tree().create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "scale", base_scale * 1.1, 0.1)
-	tween.tween_property(self, "scale", base_scale, 0.1)
+	tween.chain().tween_property(self, "scale", base_scale, 0.1)
 	tween.tween_property(self, 'modulate', Color.RED, .1)
-	tween.tween_property(self, 'modulate', Color.WHITE, .1)
+	tween.chain().tween_property(self, 'modulate', Color.WHITE, .1)
