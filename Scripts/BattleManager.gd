@@ -182,13 +182,13 @@ func resolve_combat(player_card: Node2D, opponent_card: Node2D) -> void:
 	# --- 4. 动画收尾 ---
 
 	# 等待一小段时间，让玩家看清伤害结果
-	await get_tree().create_timer(0.1).timeout
+	await get_tree().create_timer(0.2).timeout
 
 	# 攻击者返回原位
 	var return_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
-	return_tween.tween_property(attacker, "position", original_pos, 0.2)
-	return_tween.tween_property(attacker, "rotation_degrees", 0, 0.2) # 旋转归位
-	return_tween.tween_property(attacker, "scale", attacker.base_scale, 0.2) # 大小归位
+	return_tween.tween_property(player_card, "position", original_pos, 0.2)
+	return_tween.tween_property(player_card, "rotation_degrees", 0, 0.2) # 旋转归位
+	return_tween.tween_property(player_card, "scale", player_card.base_scale, 0.2) # 大小归位
 	await return_tween.finished
 
 	# --- 5. 检查卡牌阵亡 ---
