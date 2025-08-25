@@ -2,7 +2,6 @@ class_name Deck
 extends Node2D
 
 @export var is_player := false
-# ADDED: 导出NodePath，用于在编辑器中指定此牌堆对应的手牌区
 @export var target_hand_path: NodePath
 
 @onready var collision_shape_2d: CollisionShape2D = %CollisionShape2D
