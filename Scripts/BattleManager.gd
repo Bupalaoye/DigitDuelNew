@@ -127,6 +127,7 @@ func resolve_combat(player_card: Node2D, opponent_card: Node2D) -> void:
 
 	var original_pos = attacker.position
 	var target_pos = target.position
+	attacker.z_index += 1
 	# 蓄力位置：在原位置左上方
 	var charge_pos = original_pos + Vector2(-100, -150)
 
@@ -190,7 +191,8 @@ func resolve_combat(player_card: Node2D, opponent_card: Node2D) -> void:
 	return_tween.tween_property(player_card, "rotation_degrees", 0, 0.2) # 旋转归位
 	return_tween.tween_property(player_card, "scale", player_card.base_scale, 0.2) # 大小归位
 	await return_tween.finished
-
+	attacker.z_index -= 1
+	
 	# --- 5. 检查卡牌阵亡 ---
 	if player_card.current_def <= 0:
 		await destroy_card(player_card)
