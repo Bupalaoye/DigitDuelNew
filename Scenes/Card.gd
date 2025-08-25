@@ -47,8 +47,10 @@ var base_scale: Vector2 = Vector2.ZERO
 var base_z_index: int = 0
 var is_hovered: bool = false
 
+var target_position: Vector2 = Vector2.ZERO
+var starting_rotation: float = 0.0
+var target_rotation: float = 0.0
 
-var starting_position := Vector2(0, 0)
 var is_draging := false
 var is_in_slot := false
 var is_player_card := false
@@ -67,6 +69,14 @@ func _ready() -> void:
 	CardManager.connect_card_signals(self)
 	play_flip_anim()
 
+func move_to_layout_transform(new_position: Vector2, new_rotation: float, speed: float):
+	# 只更新布局目标值
+	self.target_position = new_position
+	self.target_rotation = new_rotation
+	
+	# 使用一个特定的动画速度来更新视觉
+	self._update_visuals(speed)
+
 func set_state(new_state: CardState):
 	if new_state == current_state:
 		return
@@ -75,21 +85,24 @@ func set_state(new_state: CardState):
 	current_state = new_state
 	self._on_state_enter(new_state)
 		
-	_update_visuals()
+	self._update_visuals(self.transition_duration)
 
 func _on_state_enter(new_state: CardState):
 	match new_state:
 		CardState.IN_HAND:
 			base_scale = in_hand_scale
 			base_z_index = in_hand_z_index
+			self.target_rotation = self.starting_rotation
 			collision_shape_2d.disabled = false
 		CardState.IN_SLOT:
+			print("Card entered IN_SLOT state")
 			base_scale = in_slot_scale
 			base_z_index = in_slot_z_index
 			collision_shape_2d.disabled = true
 		CardState.DRAGGING:
 			base_scale = in_dragging_scale
 			base_z_index = dragging_z_index
+			# update the rotation
 			collision_shape_2d.disabled = false
 		CardState.IN_VIEW:
 			pass
@@ -97,6 +110,7 @@ func _on_state_enter(new_state: CardState):
 # clear the state when exit
 func _on_state_exit(old_state: CardState):
 	is_hovered = false
+	self.target_rotation = 0
 	match old_state:
 		CardState.IN_HAND:
 			pass
@@ -107,21 +121,32 @@ func _on_state_exit(old_state: CardState):
 		CardState.IN_VIEW:
 			pass
 		
-	_update_visuals()
+	_update_visuals(self.transition_duration)
 
-func _update_visuals():
-	var target_scale = base_scale
-	var target_z_index = base_z_index
+func _update_visuals(speed: float):
+	# 1. 计算最终的目标值
+	var final_position = target_position
+	var final_rotation = target_rotation
+	var final_scale = base_scale
+	var final_z_index = base_z_index
 	
-	# check whether hovered
+	# 2. 叠加临时状态效果 (例如 "hovered" 或未来的 "selected")
 	if is_hovered:
-		target_scale *= hover_scale_multiplier
-		target_z_index += hover_z_offset
+		final_scale *= hover_scale_multiplier
+		final_z_index += hover_z_offset
+		# 示例：未来可以添加选中效果
+		# if is_selected:
+		#     final_position += Vector2(0, -30).rotated(deg_to_rad(target_rotation))
+		#     final_rotation -= 10.0
 	
-	# play anim by tween
+	# 3. 播放统一的动画
 	var tween = get_tree().create_tween().set_parallel()
-	tween.tween_property(self, 'scale', target_scale, transition_duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	self.z_index = target_z_index
+	tween.tween_property(self, "position", final_position, speed).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "rotation_degrees", final_rotation, speed).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "scale", final_scale, speed).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	
+	# Z-index 应该是即时变化的
+	self.z_index = final_z_index
 
 
 func is_interactable() -> bool:
@@ -131,13 +156,13 @@ func is_interactable() -> bool:
 func _on_mouse_entered():
 	if !is_interactable(): return
 	self.is_hovered = true
-	_update_visuals()
+	_update_visuals(self.transition_duration)
 	on_hovered.emit(self)
 	
 func _on_mouse_exited():
 	if !is_interactable(): return
 	is_hovered = false
-	_update_visuals()
+	_update_visuals(self.transition_duration)
 	on_hovered_off.emit(self)
 
 func update_visual():

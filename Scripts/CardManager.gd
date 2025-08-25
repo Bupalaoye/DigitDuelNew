@@ -11,7 +11,7 @@ func _ready() -> void:
 	InputManager.left_mouse_clicked.connect(on_left_mouse_clicked)
 	InputManager.left_mouse_released.connect(on_left_mouse_released)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if card_being_dragged:
 		var mouse_pos = get_global_mouse_position()
 		mouse_pos.x = clampf(mouse_pos.x, 0, screen_size.x)
@@ -47,6 +47,7 @@ func finish_drag():
 			card_being_dragged.set_state(card_being_dragged.CardState.IN_SLOT)
 			card_slot_found.card_in_slot = true
 			card_being_dragged.position = card_slot_found.position
+			card_being_dragged.move_to_layout_transform(card_slot_found.position, 0.0, 0.2)
 			card_slot_found.card_instance = card_being_dragged
 		else:
 			# 返回到其原始手牌

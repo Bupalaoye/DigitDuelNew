@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bg8xejtwvnh6r"]
+[gd_scene load_steps=6 format=3 uid="uid://bg8xejtwvnh6r"]
 
 [ext_resource type="PackedScene" uid="uid://cfpbtymwc5m73" path="res://Scenes/Deck.tscn" id="2_idj7w"]
 [ext_resource type="PackedScene" uid="uid://dj88ln2j5bhf" path="res://Scenes/CardSlotsManager.tscn" id="2_kln2b"]
 [ext_resource type="Script" uid="uid://p764x0pgi1cn" path="res://Scripts/Hand.gd" id="3_kln2b"]
+[ext_resource type="Texture2D" uid="uid://d183yqomhq0ye" path="res://Assets/Background/peaceful_bg_2.png" id="4_pbw6q"]
 [ext_resource type="Script" uid="uid://5ixmwbpc4yc4" path="res://Scripts/BattleManager.gd" id="4_rgh2o"]
 
 [node name="Main" type="Node2D"]
@@ -30,14 +31,17 @@ target_hand_path = NodePath("../../Hands/OpponentHand")
 
 [node name="PlayerHand" type="Node2D" parent="Hands"]
 script = ExtResource("3_kln2b")
-hand_y_position = 1000.0
-center_screen_x = 960.0
+arc_center_offset = Vector2(960, 1930)
+arc_radius = 950.0
+angle_pre_card = 10.0
 
 [node name="OpponentHand" type="Node2D" parent="Hands"]
 position = Vector2(0, -2)
 script = ExtResource("3_kln2b")
 is_player_hand = false
-center_screen_x = 960.0
+arc_center_offset = Vector2(960, -800)
+arc_radius = 900.0
+angle_pre_card = 10.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -76,8 +80,21 @@ grow_vertical = 0
 theme_override_font_sizes/font_size = 70
 text = "30"
 
+[node name="ParallaxBackground" type="ParallaxBackground" parent="CanvasLayer"]
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ParallaxBackground"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_pbw6q")
+
 [node name="BattleManager" type="Node" parent="."]
 script = ExtResource("4_rgh2o")
 
 [node name="BattleTimer" type="Timer" parent="BattleManager"]
 unique_name_in_owner = true
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(876, -800)

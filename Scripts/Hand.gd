@@ -2,12 +2,21 @@ class_name Hand
 extends Node2D
 
 const DEFAULT_CARD_MOVE_SPEED = 0.1
-const CARD_SPACING = 180
+# const CARD_SPACING = 180
 
 # ADDED: 导出变量，用于在编辑器中配置
 @export var is_player_hand: bool = true # 用来区分是玩家手牌还是对手手牌
-@export var hand_y_position: float = 0 # 手牌区域的Y坐标
-@export var center_screen_x: float = 0.0
+# @export var hand_y_position: float = 0 # 手牌区域的Y坐标
+# @export var center_screen_x: float = 0.0
+
+@export_group('arc layout')
+@export var arc_center_offset: Vector2 = Vector2(576, 850)
+# the radius of the arc (in pixels) that the cards will be arranged along
+@export var arc_radius: float = 800.0
+# the spacing (in pixels) between cards in the hand
+@export var angle_pre_card: float = 5.0
+# the max arc angle (in degrees) that the cards will be spread out over
+@export var max_arc_angle: float = 60.0
 
 # MODIFIED: 变量名从 player_hand 改为 cards_in_hand
 var cards_in_hand: Array[Node2D] = []
@@ -24,14 +33,15 @@ func add_card_to_hand(card: Node2D, speed: float):
 	card.set_state(card.CardState.IN_HAND)
 
 	if card in cards_in_hand:
-		animation_card_to_position(card, card.starting_position, DEFAULT_CARD_MOVE_SPEED)
+		pass
 	else:
 		if not self.is_player_hand:
 			cards_in_hand.insert(0, card)
 		else:
 			cards_in_hand.append(card)
-		# ADDED: 确保卡牌的起始位置正确
-		update_hand_positions(speed)
+
+	# ADDED: 确保卡牌的起始位置正确
+	update_hand_positions(speed)
 
 func remove_card_from_hand(card: Node2D):
 	if card in cards_in_hand:
@@ -46,35 +56,41 @@ func update_hand_positions(speed: float):
 	if hand_size == 0:
 		return
 
-	# 1. 计算手牌的总宽度
-	# 这是从第一张牌的中心到最后一张牌的中心的距离。
-	# 例如，3张牌有2个间距。
-	var total_hand_width = (hand_size - 1) * CARD_SPACING
+	# 1. 计算当前手牌应该展开的总角度
+	# (hand_size - 1) * angle_pre_card 是理论总角度
+	# 我们用 min() 来确保它不会超过设定的最大值 max_arc_angle
+	var total_arc_angle = min((hand_size - 1) * angle_pre_card, max_arc_angle)
 
-	# 2. 计算第一张牌的起始X坐标
-	# 算法：从屏幕中心点向左移动总宽度的一半，这样整个手牌区域就会居中。
-	var start_x = center_screen_x - (total_hand_width / 2.0)
-	# 3. 遍历所有手牌并设置它们的新位置
+	# 2. 计算第一张牌的起始角度
+	# 为了让整个弧形居中，我们将总角度的一半作为负的起始点
+	var start_angle_deg = - total_arc_angle / 2.0 
+	if not self.is_player_hand:
+		# 对手卡牌反一下
+		start_angle_deg += 180
+	# 3. 计算每张牌之间的角度步长
+	# 如果只有一张牌，步长为0，它会正好在中间
+	var angle_step_deg = total_arc_angle / (hand_size - 1) if hand_size > 1 else 0
+
+	# 4. 遍历所有手牌，计算并应用它们的新位置和旋转
 	for i in range(hand_size):
 		var card = cards_in_hand[i]
-		# 计算当前卡牌的中心X坐标
-		var target_x = start_x + (i * CARD_SPACING)
-		# 创建目标位置向量
-		var new_position = Vector2(target_x, hand_y_position)
 		
-		# 播放动画将卡牌移动到新位置
-		animation_card_to_position(card, new_position, speed)
-
-
-func animation_card_to_position(card: Node2D, new_position: Vector2, speed: float):
-	var tween = get_tree().create_tween()
-	card.starting_position = new_position
-	tween.tween_property(card, "position", new_position, speed)
-	# 如果是对手手牌，可以考虑加上旋转，让牌背朝向玩家
-	if !is_player_hand:
-		# 示例：对手手牌可以翻转
-		# tween.tween_property(card, "rotation_degrees", 180, speed)
-		pass
+		# a. 计算当前卡牌的目标角度
+		var card_angle_deg = start_angle_deg + i * angle_step_deg
+		# 将角度转换为弧度，因为Godot的sin/cos函数使用弧度
+		var card_angle_rad = deg_to_rad(card_angle_deg)
+		
+		# b. 计算卡牌的目标位置 (极坐标转笛卡尔坐标)
+		# 我们以 arc_center_offset 为圆心，arc_radius 为半径来计算位置
+		# 我们从上方(PI/2)开始计算，所以要减去 card_angle_rad
+		var target_pos: Vector2 = Vector2.ZERO
+		target_pos = arc_center_offset + Vector2(
+			arc_radius * sin(card_angle_rad), # X坐标
+			-1 * arc_radius * cos(card_angle_rad) # Y坐标
+		)
+		# c. update layout
+		card.starting_rotation = card_angle_deg
+		card.move_to_layout_transform(target_pos, card_angle_deg, speed)
 
 func get_highest_attack_card() -> Node2D:
 	# 1. 处理边缘情况：如果手牌是空的，直接返回 null。
